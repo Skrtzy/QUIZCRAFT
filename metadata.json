@@ -1,0 +1,5 @@
+{
+  "name": "QuizCraft",
+  "description": "An intelligent quiz platform that transforms raw text into interactive quizzes with shuffled choices and detailed rationales.",
+  "requestFramePermissions": []
+}
