@@ -6,6 +6,19 @@ export interface QuizQuestion {
   rationale: string;
 }
 
+export interface Flashcard {
+  id: string;
+  term: string;
+  definition: string;
+}
+
+export interface IdentificationQuestion {
+  id: string;
+  term: string;
+  definition: string;
+  hint?: string;
+}
+
 export interface QuizSession {
   questions: QuizQuestion[];
   currentQuestionIndex: number;
