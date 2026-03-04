@@ -33,6 +33,7 @@ export default function App() {
   const [rawInput, setRawInput] = useState("");
   const [isParsing, setIsParsing] = useState(false);
   const [scramble, setScramble] = useState(false);
+  const [flashcardMode, setFlashcardMode] = useState<"term_first" | "meaning_first">("term_first");
   
   // MCQ State
   const [mcqQuestions, setMcqQuestions] = useState<QuizQuestion[]>([]);
@@ -318,6 +319,32 @@ export default function App() {
                     </button>
                   </div>
 
+                  {view === "input_id" && (
+                    <div className="flex items-center gap-4 md:border-l md:border-[#141414]/10 md:pl-6 md:ml-2">
+                      <span className="text-sm font-bold text-[#141414]/40 uppercase tracking-wider whitespace-nowrap">Show First:</span>
+                      <div className="flex bg-[#141414]/5 p-1 rounded-xl">
+                        <button
+                          onClick={() => setFlashcardMode("term_first")}
+                          className={cn(
+                            "px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap",
+                            flashcardMode === "term_first" ? "bg-white text-[#141414] shadow-sm" : "text-[#141414]/40 hover:text-[#141414]/60"
+                          )}
+                        >
+                          Term
+                        </button>
+                        <button
+                          onClick={() => setFlashcardMode("meaning_first")}
+                          className={cn(
+                            "px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap",
+                            flashcardMode === "meaning_first" ? "bg-white text-[#141414] shadow-sm" : "text-[#141414]/40 hover:text-[#141414]/60"
+                          )}
+                        >
+                          Meaning
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex gap-4 w-full md:w-auto">
                     {view === "input_mcq" ? (
                       <button
@@ -386,8 +413,15 @@ export default function App() {
                 >
                   {/* Front */}
                   <div className="absolute inset-0 backface-hidden bg-white border-2 border-[#141414]/5 rounded-[3rem] shadow-2xl shadow-[#141414]/5 flex flex-col items-center justify-center p-12 text-center">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#141414]/30 mb-4">Term</span>
-                    <h3 className="text-4xl font-bold leading-tight">{idQuestions[idIndex].term}</h3>
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#141414]/30 mb-4">
+                      {flashcardMode === "term_first" ? "Term" : "Meaning"}
+                    </span>
+                    <h3 className={cn(
+                      "font-bold leading-tight",
+                      flashcardMode === "term_first" ? "text-4xl" : "text-2xl"
+                    )}>
+                      {flashcardMode === "term_first" ? idQuestions[idIndex].term : idQuestions[idIndex].definition}
+                    </h3>
                     <div className="mt-12 text-emerald-600 flex items-center gap-2 text-sm font-bold animate-pulse">
                       Click to flip <RotateCcw size={14} />
                     </div>
@@ -397,8 +431,15 @@ export default function App() {
                     className="absolute inset-0 backface-hidden bg-[#141414] text-white border-2 border-[#141414] rounded-[3rem] shadow-2xl shadow-[#141414]/20 flex flex-col items-center justify-center p-12 text-center"
                     style={{ transform: "rotateY(180deg)" }}
                   >
-                    <span className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">Meaning</span>
-                    <p className="text-2xl leading-relaxed">{idQuestions[idIndex].definition}</p>
+                    <span className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">
+                      {flashcardMode === "term_first" ? "Meaning" : "Term"}
+                    </span>
+                    <p className={cn(
+                      "leading-relaxed",
+                      flashcardMode === "term_first" ? "text-2xl" : "text-4xl font-bold"
+                    )}>
+                      {flashcardMode === "term_first" ? idQuestions[idIndex].definition : idQuestions[idIndex].term}
+                    </p>
                   </div>
                 </motion.div>
               </div>
